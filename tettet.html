@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ランダム図形アート</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0d1117; overflow: hidden; }
+    canvas { display: block; }
+    #back {
+      position: fixed; top: 16px; left: 16px;
+      background: rgba(255,255,255,0.1);
+      color: #e6edf3; border: 1px solid #30363d;
+      border-radius: 6px; padding: 6px 14px;
+      font-family: sans-serif; font-size: 0.85rem;
+      text-decoration: none; cursor: pointer;
+      transition: background 0.2s;
+    }
+    #back:hover { background: rgba(255,255,255,0.2); }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <a id="back" href="index.html">← 戻る</a>
+  <script>
+    const canvas = document.getElementById("c");
+    const ctx = canvas.getContext("2d");
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      draw();
+    }
+
+    function rnd(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const n = Math.floor(rnd(40, 80));
+      for (let i = 0; i < n; i++) {
+        const x = rnd(0, canvas.width);
+        const y = rnd(0, canvas.height);
+        const r = rnd(20, Math.min(canvas.width, canvas.height) * 0.25);
+        const h = rnd(0, 360);
+        const a = rnd(0.15, 0.7);
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${h},80%,60%,${a})`;
+        ctx.fill();
+      }
+    }
+
+    window.addEventListener("resize", resize);
+    canvas.addEventListener("click", draw);
+    resize();
+  </script>
+</body>
+</html>
